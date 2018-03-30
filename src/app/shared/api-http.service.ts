@@ -7,7 +7,7 @@ const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0ODQ2NzY4MjEsImlh
 const httpOptions = {
 	headers: new HttpHeaders({
 		'Content-Type': 'application/json',
-		'Authorization': token
+		'Authorization': token,
 	});
 }
 
