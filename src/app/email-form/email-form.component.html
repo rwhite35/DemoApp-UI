@@ -1,0 +1,75 @@
+<section class="container-fluid">
+	<form class="form-horizontal" [formGroup]="emailform">
+		
+		<fieldset formGroupName='name'>
+		<!-- first name -->
+        <div class="form-group"
+        	[ngClass]="{'has-error': firstName.invalid && (firstName.dirty || firstName.touched)}">
+        	<label class="col-sm-3 control-label">First Name</label>
+        	<div class="col-sm-9">
+            	<input class="form-control" 
+            		formControlName="firstName" 
+            		placeholder="First Name" 
+            		required >
+            	<div class="form-control-feedback"
+            		*ngIf="firstName.errors && (firstName.dirty || firstName.touched)">
+            		<span *ngIf="firstName.errors.required">First name is a required field!</span>
+            	</div>	
+         	</div>
+        </div>
+        <!-- last name -->
+        <div class="form-group"
+        	[ngClass]="{'has-error': lastName.invalid && (lastName.dirty || lastName.touched)}">
+        	<label class="col-sm-3 control-label">Last Name</label>
+        	<div class="col-sm-9">
+            	<input class="form-control" 
+            		formControlName="lastName" 
+            		placeholder="Last Name" 
+            		required >
+            	<div class="form-control-feedback"
+            		*ngIf="lastName.errors && (lastName.dirty || lastName.touched)">
+            		<span *ngIf="lastName.errors.required">Last name is a required field!</span>
+            	</div>	
+         	</div>
+        </div>
+        </fieldset>
+        
+        <!-- Email -->
+        <div class="form-group"
+        	[ngClass]="{'has-error': email.invalid && (email.dirty || email.touched)}">
+        	<label class="col-sm-3 control-label">Email</label>
+        	<div class="col-sm-9">
+            	<input class="form-control" 
+            		formControlName="email" 
+            		placeholder="Email" 
+            		required >
+            	<div class="form-control-feedback"
+            		*ngIf="email.errors && (email.dirty || email.touched)">
+            		<span *ngIf="email.errors.required">Not a valid email address!</span>
+            	</div>	
+         	</div>
+        </div>
+        
+        <!-- Password -->
+        <div class="form-group"
+        	[ngClass]="{'has-error': password.invalid && (password.dirty || password.touched)}">
+        	<label class="col-sm-3 control-label">Password</label>
+        	<div class="col-sm-9">
+            	<input class="form-control" 
+            		formControlName="password" 
+            		placeholder="Email Account Password" 
+            		required >
+            	<div class="form-control-feedback"
+            		*ngIf="password.errors && (password.dirty || password.touched)">
+            		<span *ngIf="password.errors.required">Password is a required field!</span>
+            	</div>	
+         	</div>
+        </div>
+        
+        <div class="col-sm-12">
+        	<button type="button" class="btn btn-default pull-right"
+        		(click)="validateSendForm()">Email Form</button>
+        </div>
+    </form>
+</section>
+                   
