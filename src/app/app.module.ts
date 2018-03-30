@@ -8,7 +8,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ApiHttpService } from './shared/api-http.service';
+import { ApiHttpService } from './shared/apiservice/api-http.service';
 import { AuthGuard } from './shared';
 
 // AoT requires an exported function for factories
@@ -21,13 +21,14 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    EmailFormComponent
+    // EmailFormComponent
   ],
   imports: [
   	CommonModule,
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    // FormsModule,
+    // ReactiveFormsModule,
     TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
