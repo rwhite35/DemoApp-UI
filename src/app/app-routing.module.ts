@@ -1,9 +1,18 @@
+/**
+ * AppRoutingModule
+ * Setup all internal routing for application here.
+ * Each feature of has a route which loads its <feature>.module.ts file.
+ * 
+ * Using routes for loading API specific configurations when required. 
+ * API configurations JSON defined in assets/config.json
+ */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 
 const routes: Routes = [
+    { path: 'configs', loadChildren: './shared/config/config.module#ConfigModule' },
     { path: '', loadChildren: './layout/layout.module#LayoutModule', canActivate: [AuthGuard] },
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
     { path: 'signup', loadChildren: './signup/signup.module#SignupModule' },
@@ -14,7 +23,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+    imports: [
+      RouterModule.forRoot(routes)
+    ],
+    exports: [
+      RouterModule
+    ]
 })
 export class AppRoutingModule {}

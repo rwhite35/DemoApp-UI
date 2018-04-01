@@ -8,8 +8,16 @@
     position: relative;
     overflow: hidden;
 }
+.api-console {
+	clear: both;
+	position: fixed bottom;
+	
+}
 @media screen and (max-width: 992px) {
     .main-container {
         margin-left: 0px !important;
+    }
+    .api-console {
+	    margin-top: 5px;
     }
 }

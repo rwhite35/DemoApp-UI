@@ -3,48 +3,49 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ApiHttpService } from './shared/apiservice/api-http.service';
+import { ConfigModule } from './shared/config/config.module';
 import { AuthGuard } from './shared';
+import { ApiHttpService } from './shared/apiservice/api-http.service';
+import { ConfigService } from './shared/config/config.service';
 
-// AoT requires an exported function for factories
+// Ahead-of-Time compiler requires an exported function for transpiling
 export function createTranslateLoader(http: HttpClient) {
-    // for development
-    // return new TranslateHttpLoader(http, '/start-angular/SB-Admin-BS4-Angular-5/master/dist/assets/i18n/', '.json');
-    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
   declarations: [
     AppComponent,
-    // EmailFormComponent
   ],
   imports: [
-  	CommonModule,
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
-    // FormsModule,
-    // ReactiveFormsModule,
     TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: createTranslateLoader,
-                deps: [HttpClient]
-            }
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
+      }
     }),
+    ConfigModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
-  	ApiHttpService,
-  	AuthGuard
+    ApiHttpService,
+    ConfigService,
+    AuthGuard
   ],
   bootstrap: [
-  	AppComponent
+    AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {}
