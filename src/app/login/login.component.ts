@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {routerTransition} from '../router.animations';
 import { FormBuilder, Validators } from '@angular/forms';
 
+// uses ApiHttpService to call API endpoints
 import {ApiHttpService} from '../shared/apiservice/api-http.service';
 
 @Component({
@@ -26,16 +27,15 @@ export class LoginComponent implements OnInit {
   private token: string;
   /*
    * {object} Form data from FormBuilder
-   * FormBuilder manages the FormGroup construction,
-   * no need to manually construct each input control,
-   * at least for the login form.
+   * FormBuilder manages the FormGroup construction, no need to manually 
+   * construct each input control at least for the login form.
    */
   private formData = this.formBuilder.group({
     user: ['', Validators.required],
     password: ['', Validators.required],
     token: ['']
   });
-  private method: string;
+  private service: string;
   public requestDate: any[] = [];
   public response: any;
 
@@ -48,25 +48,21 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   /*
-   * On Submit event, calls this method
-   * Assigns form fields to formData object.
+   * onLoggedin
+   * On Submit event, calls this method. Assigns form fields to formData object.
    */
   onLoggedin(event) {
-    console.log('onLoggedin clicked, passing user name ' + 
-      JSON.stringify(event));
-    
-    // post validation
+    // get login form data
     this.requestDate = [
       this.formData.value.user,
       this.formData.value.password,
       this.formData.value.token
      ];
     
-    // this.method = 'GET';
-    this.method = 'POST';
-   
-    // make the api call
-    this.apiHttpService.processFormData(this.requestDate, this.method);
+    // Login/POST authenticates the user, creates an entry and sets the users XID
+    this.service = 'login';
+    // make the api call, routes to access-denied on fail, dashboard on susccess
+    this.apiHttpService.processFormData(this.requestDate, this.service);
   }
 
 }

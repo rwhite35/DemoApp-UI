@@ -29,20 +29,22 @@ export class ApiHttpService {
   /**
    * Process login input and called the API endpoint
    */
-  public processFormData(formData: any[], method) {
+  public processFormData(formData: any[], service) {
 
     /** @TODO replace with config/config.provider */
     const requestUrl = 'http://localhost:8888/workspace/DemoApp/public/login';
     const apikey = '01f0462d-15d8-4fbc-b113-1d0e106b1135';
 
-    // make the call to API Endpoint
-    if (method === 'GET') {
+    // Call to UI's API service resources
+    if (service === 'fetchall') {
+        // fetchAll GET request
         return this.httpGetRequest( requestUrl, apikey, formData );
 
-    } else if (method === 'POST') {
+    } else if (service === 'login') {
+        // create (new session) POST request
         return this.httpPostRequest( requestUrl, apikey, formData );
-
     }
+    
   }
 
   /*
@@ -71,31 +73,45 @@ export class ApiHttpService {
   }
   
   /*
-   * HTTP PUT Method
-   * @return {string} responseid[id'] the API generated unique id for the each transaction
+   * Login Service HTTP POST request method
+   * @return {string} eXternal User Id (XID) generated for the each authenticated user
    */
   private httpPostRequest(requestUrl, apikey, formData) {
+    
+    let status: number;
     
     this.http.post(requestUrl, {
           'user': formData[0],          // user name
           'password': formData[1],      // password
-          'message': 'This is test data.',
+          'message': '',                // API response message
       }, httpOptions)
       .subscribe(
         (val) => {
-          // assign response id to user for authenticationed validation
-          if ( val.hasOwnProperty('id').valueOf ) {
-            console.log('httpPostRequest returned response id ' + val['id']);
-            // save logged in XID
+          // check for errors coming back from API
+          if ( val['message']['error_code'] ) {
+            console.log('httpPostRequest returned errors ' + val['message']['error_message']);
+            status = val['message']['error_code'];    // 401
+
+            // 401 - route to access-denied
+            this.router.navigate(['/access-denied']);
+
+          } // check for XID and assign to localStoreage
+          else if ( val.hasOwnProperty('id').valueOf ) {
+            console.log('httpPostRequest returned external id (XID) ' + val['id']);
+            // save API XID to localStorage
             localStorage.setItem('isLoggedin', 'true');
             localStorage.setItem('xid', val['id']);
-            // navigate to dashboard
+            status = 0;   // success
+
+            // route to dashboard
             this.router.navigate(['/dashboard']);
           }
        },
        () => {
-          console.log('Post observable is now complete.');
+          console.log( 'Post observable is now completed with status ' + status );
        });
+
+      return status;
   }
 
 }
