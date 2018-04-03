@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
     public sliders: Array<any> = [];
 
     constructor() {
+      /*
         this.sliders.push(
             {
                 imagePath: 'assets/images/slider1.jpg',
@@ -31,7 +32,6 @@ export class DashboardComponent implements OnInit {
                     'Praesent commodo cursus magna, vel scelerisque nisl consectetur.'
             }
         );
-
         this.alerts.push(
             {
                 id: 1,
@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
                 voluptatum veritatis quod aliquam! Rerum placeat necessitatibus, vitae dolorum`
             }
         );
+         */
     }
 
     ngOnInit() {}
