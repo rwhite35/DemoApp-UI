@@ -1,0 +1,8 @@
+{
+  "login": [ 
+  		{
+  			"enpoint": "http://localhost:8888/workspace/DemoApp/public/login",
+  			"apikey": "01f0462d-15d8-4fbc-b113-1d0e106b1135"
+  		}
+  	]
+}

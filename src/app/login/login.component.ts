@@ -30,12 +30,12 @@ export class LoginComponent implements OnInit {
    * FormBuilder manages the FormGroup construction, no need to manually 
    * construct each input control at least for the login form.
    */
-  private formData = this.formBuilder.group({
+  public formData = this.formBuilder.group({
     user: ['', Validators.required],
     password: ['', Validators.required],
     token: ['']
   });
-  private service: string;
+  public service: string;
   public requestDate: any[] = [];
   public response: any;
 

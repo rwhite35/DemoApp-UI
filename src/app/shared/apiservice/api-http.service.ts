@@ -3,6 +3,10 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+/** @TODO replace with config/config.provider */
+const host = 'http://localhost:8888/workspace/DemoApp/public/';
+const apikey = '01f0462d-15d8-4fbc-b113-1d0e106b1135';
+
 // Authorization Basic
 const token = 'Basic NWdeaPS1r3uZXZIFrQ/EOELxZFA=';
 
@@ -28,23 +32,29 @@ export class ApiHttpService {
 
   /**
    * Process login input and called the API endpoint
+   * Acts as a routing method which configures the API URL
+   * and call the method passed as the "service" to hit.
    */
   public processFormData(formData: any[], service) {
-
-    /** @TODO replace with config/config.provider */
-    const requestUrl = 'http://localhost:8888/workspace/DemoApp/public/login';
-    const apikey = '01f0462d-15d8-4fbc-b113-1d0e106b1135';
-
-    // Call to UI's API service resources
-    if (service === 'fetchall') {
-        // fetchAll GET request
-        return this.httpGetRequest( requestUrl, apikey, formData );
-
-    } else if (service === 'login') {
-        // create (new session) POST request
-        return this.httpPostRequest( requestUrl, apikey, formData );
-    }
     
+    let url: string;
+    
+    // Call to UI's API service resources
+    // fetchAll GET request
+    if (service === 'fetchall') {
+        url = host + 'login';
+        return this.httpGetRequest( url, apikey, formData );
+      
+    // create (new user Entity) POST request
+    } else if (service === 'login') {
+        url = host + 'login';
+        return this.httpPostRequest( url, apikey, formData );
+      
+    // fetch a route guide by order id  
+    } else if (service === 'routeguide') {
+        url = host + 'route-guide/' + formData[2];
+        return this.httpFetchRequest( url, apikey, formData);
+    }
   }
 
   /*
@@ -98,6 +108,7 @@ export class ApiHttpService {
           } // check for XID and assign to localStoreage
           else if ( val.hasOwnProperty('id').valueOf ) {
             console.log('httpPostRequest returned external id (XID) ' + val['id']);
+            
             // save API XID to localStorage
             localStorage.setItem('isLoggedin', 'true');
             localStorage.setItem('xid', val['id']);
@@ -112,6 +123,32 @@ export class ApiHttpService {
        });
 
       return status;
+  }
+  
+  /**
+   * HTTP FETCH Method
+   * Fetch an item by its item id.  Example order_id
+   */
+  private httpFetchRequest(requestUrl, apikey, formData) {
+    console.log('httpFetchRequest called from ' +
+      'processFormData method with request URL ' +
+      requestUrl + ' and formData orderId ' + formData[0]
+    );
+
+    const res = this.http
+      .get(requestUrl, httpOptions)
+      .subscribe(
+        val => {
+          console.log('httpGetRequest result ' + val['user']);
+          console.log('httpFetchRequest timestamp ' + val['timestamp']);
+          console.log('httpFetchRequest oid ' + val['oid']);
+        },
+        err => {
+          console.log('Error httpGetRequest ' + err);
+        }
+      );
+
+      return res;
   }
 
 }

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-header',
@@ -9,9 +10,14 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
+    
+    public xid: any;
 
-    constructor(private translate: TranslateService, public router: Router) {
-
+    constructor(
+      private translate: TranslateService, 
+      public router: Router
+    ) {
+        this.xid = (localStorage.getItem('isLoggedin')) ? localStorage.getItem('xid') : null;
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de', 'zh-CHS']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
@@ -51,5 +57,13 @@ export class HeaderComponent implements OnInit {
 
     changeLang(language: string) {
         this.translate.use(language);
+    }
+  
+    /**
+     * Route Guide Form
+     * Pass in xid and attach to form as hidden field "id"
+     */
+    routeGuide(event: any) {
+        this.router.navigate( ['/forms'], this.xid );
     }
 }
